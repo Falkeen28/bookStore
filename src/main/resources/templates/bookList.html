@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pl-PL" xmlns:th="https://www.thymeleaf.com">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Book Store</title>
+    <script src="https://kit.fontawesome.com/df3d007e3b.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link th:href="@{/style.css}" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white">Book Store</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active text-white" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="available_books">Available Books</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="my_books">My Books</a>
+                </li>
+            </ul>
+            <div class="nav-links">
+                <a class="nav-link text-white" href="registration" th:text="#{navbar.sigin}"></a>
+                <a class="nav-link text-white" href="login" th:text="#{navbar.login}"></a>
+                <a class="nav-link text-white" href="book_register" th:text="#{navbar.new}"></a>
+                <form th:action="@{/logout}" method="post">
+                    <input class="nav-link text-white" type="submit" value="Logout">
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <form action="/available_books" method="GET">
+            <label for="sort">Sort by:</label>
+            <select name="sort" id="sort" onchange="this.form.submit()">
+                <option value="">Select</option>
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+                <option value="price">Price</option>
+                <option value="quantity">Quantity</option>
+            </select>
+            <select name="sortDir">
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
+            </select>
+
+        </form>
+
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}">ID</td>
+            <td th:text="${book.title}">Title</td>
+            <td th:text="${book.author}">Author</td>
+            <td th:text="${book.quantity}">Quantity</td>
+            <td th:text="${book.price}">Price</td>
+            <td><a class="btn btn-secondary btn-sm"th:href="@{/mylist/{id}(id=${book.id})}">Add to my list</a>
+                <a style="color: blue" th:href="@{/editBook/{id}(id=${book.id})}"><i class="fa-solid fa-pen-to-square ms-4" ></i></a>
+                <a style="color: red" th:href="@{/deleteBook/{id}(id=${book.id})}"><i class="fa-solid fa-trash ms-4"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
